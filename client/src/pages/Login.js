@@ -1,0 +1,81 @@
+import React from "react";
+import { Row, Col, Form, Input } from "antd";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../redux/actions/userActions";
+import Spinner from "../components/Spinner";
+
+// AOS
+import AOS from "aos";
+import "aos/dist/aos.css";
+AOS.init();
+
+function Login() {
+  const dispatch = useDispatch();
+
+  const { loading } = useSelector((state) => state.alertsReducer);
+
+  function onFinish(values) {
+    dispatch(userLogin(values));
+  }
+
+  return (
+    <div className="login">
+      {loading && <Spinner />}
+      <Row gutter={16} className="d-flex align-items-center">
+        <Col lg={16} style={{ position: "relative" }}>
+          <img
+            data-aos="slide-right"
+            data-aos-duration="1500"
+            src={require(`../images/car.jpeg`)}
+            className="carimg1"
+          />
+          <h1 className="login-logo">CarSy</h1>
+        </Col>
+        <Col lg={8} className="text-left p-5">
+          <Form
+            layout="vertical"
+            className="login-form p-5"
+            onFinish={onFinish}
+            id="login"
+          >
+            <h1>Login</h1>
+            <hr />
+            <Form.Item
+              name="username"
+              label="Email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter valid email",
+                  type: "email",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                { required: true, message: "Please enter your password" },
+              ]}
+            >
+              <Input.Password
+                style={{ backgroundColor: "#333", color: "white" }}
+              />
+            </Form.Item>
+
+            <button id="button" className="btn1 mt-2 mb-4">Login</button>
+
+            <br />
+
+            <Link to="/register">Not registered ? Click Here to register</Link>
+          </Form>
+        </Col>
+      </Row>
+    </div>
+  );
+}
+
+export default Login;
